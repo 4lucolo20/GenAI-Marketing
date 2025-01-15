@@ -6,7 +6,8 @@ subprocess.check_call([sys.executable, "-m", "pip", "install", "pandasai"])
 subprocess.check_call([sys.executable, "-m", "pip", "install", "langchain_groq"])
 subprocess.check_call([sys.executable, "-m", "pip", "install", "streamlit_extras"])
 subprocess.check_call([sys.executable, "-m", "pip", "install", "whisper"])
-subprocess.check_call([sys.executable, "-m", "pip", "install", "transformers"])from pandasai import SmartDataframe
+subprocess.check_call([sys.executable, "-m", "pip", "install", "transformers"])
+from pandasai import SmartDataframe
 from langchain_groq import ChatGroq
 from dotenv import load_dotenv
 import os
