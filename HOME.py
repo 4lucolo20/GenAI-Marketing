@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+import pandasai
+import langchain_groq
 from pandasai import SmartDataframe
 from langchain_groq import ChatGroq
 from dotenv import load_dotenv
