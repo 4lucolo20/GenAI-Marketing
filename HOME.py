@@ -2,11 +2,26 @@ import streamlit as st
 import pandas as pd
 import subprocess
 import sys
-subprocess.check_call([sys.executable, "-m", "pip", "install", "pandasai"])
-subprocess.check_call([sys.executable, "-m", "pip", "install", "langchain_groq"])
-subprocess.check_call([sys.executable, "-m", "pip", "install", "streamlit_extras"])
-subprocess.check_call([sys.executable, "-m", "pip", "install", "whisper"])
-subprocess.check_call([sys.executable, "-m", "pip", "install", "transformers"])
+try:
+    import pandasai
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "pandasai"])
+    import pandasai 
+try:
+    import langchain_groq
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "pandasai"])
+    import langchain_groq 
+try:
+    import streamlit_extras
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "pandasai"])
+    import streamlit_extras 
+try:
+    import transformers
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "pandasai"])
+    import transformers 
 from pandasai import SmartDataframe
 from langchain_groq import ChatGroq
 from dotenv import load_dotenv
@@ -167,7 +182,7 @@ def chat_with_csv(df, query):
     # Initializing GROQ chat with provided API key, model name, and settings
     llm = ChatGroq(
         groq_api_key=groq_api_key, model_name="deepseek-r1-distill-llama-70b",
-        temperature=0.4)
+        temperature=0.7)
     # Initialize SmartDataframe with DataFrame and LLM configuration
     pandas_ai = SmartDataframe(df, config={"llm": llm})
     # Chat with the DataFrame using the provided query
@@ -297,6 +312,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 box0,box1,box2 = st.columns((3,5,3))
+box01,box11,box21 = st.columns((3,5,3))
 dash0, dash1, dash2, dash3, dash4, dash5, dash6, dash7, dash8 = st.columns((2,30,1,30,1,30,1,30,2))
 bot0,bot1,bot2,dat0, dat1 = st.columns((0.6,30,0.6,17,0.6))
 
@@ -333,7 +349,8 @@ with box1:
             unsafe_allow_html=True)
         input_csvs = st.file_uploader("",type=['csv'], accept_multiple_files=True)
 
-    if input_csvs:
+if input_csvs:
+    with box11:
         st.markdown(""" 
                     <style> 
                         @import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" );
@@ -364,275 +381,275 @@ with box1:
         st.text("")
         st.text("")
 
-        with dash1:
-            st.markdown(""" 
-                                        <style> 
-                                            @import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" );
+    with dash1:
+        st.markdown(""" 
+                                    <style> 
+                                        @import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" );
 
-                                            .ttdash-font {
-                                                font-size: 25px;
-                                                font-family:  "Poppins", sans-serif;
-                                                color: white;
-                                                font-weight: 600;
-                                                padding-top: -2rem;
-                                                margin-top: -2rem;
-                                                padding-bottom: -1rem;
-                                                margin-bottom: -1rem;
-                                            } 
-                                        </style> 
-                                    """, unsafe_allow_html=True)
+                                        .ttdash-font {
+                                            font-size: 25px;
+                                            font-family:  "Poppins", sans-serif;
+                                            color: white;
+                                            font-weight: 600;
+                                            padding-top: -2rem;
+                                            margin-top: -2rem;
+                                            padding-bottom: -1rem;
+                                            margin-bottom: -1rem;
+                                        } 
+                                    </style> 
+                                """, unsafe_allow_html=True)
 
-            st.markdown(
-                '<p class="ttdash-font" style="text-align:center;">Regional Data</p>',
-                unsafe_allow_html=True)
+        st.markdown(
+            '<p class="ttdash-font" style="text-align:center;">Regional Data</p>',
+            unsafe_allow_html=True)
 
-            with st.container(border = True, height = 200):
-                mapdash1(data)
-
-
-
-        with dash3:
-            st.markdown(""" 
-                        <style> 
-                            @import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" );
-
-                            .ttdash-font {
-                                font-size: 25px;
-                                font-family:  "Poppins", sans-serif;
-                                color: white;
-                                font-weight: 600;
-                                padding-top: 0rem;
-                                margin-top: 0rem;
-                            } 
-                        </style> 
-                    """, unsafe_allow_html=True)
-
-            st.markdown(
-                '<p class="ttdash-font" style="text-align:center;">Engagement Rating</p>',
-                unsafe_allow_html=True)
-
-            with st.container(border=True, height=200):
-                engrating(data)
+        with st.container(border = True, height = 200):
+            mapdash1(data)
 
 
 
-        with dash5:
-            st.markdown(""" 
-                        <style> 
-                            @import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" );
+    with dash3:
+        st.markdown(""" 
+                    <style> 
+                        @import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" );
 
-                            .ttdash-font {
-                                font-size: 25px;
-                                font-family:  "Poppins", sans-serif;
-                                color: white;
-                                font-weight: 600;
-                                padding-top: 0rem;
-                                margin-top: 0rem;
-                            } 
-                        </style> 
-                    """, unsafe_allow_html=True)
+                        .ttdash-font {
+                            font-size: 25px;
+                            font-family:  "Poppins", sans-serif;
+                            color: white;
+                            font-weight: 600;
+                            padding-top: 0rem;
+                            margin-top: 0rem;
+                        } 
+                    </style> 
+                """, unsafe_allow_html=True)
 
-            st.markdown(
-                '<p class="ttdash-font" style="text-align:center;">Sentiment Overtime</p>',
-                unsafe_allow_html=True)
-            with st.container(border=True, height=200):
-                if not st.session_state.clicked:
-                    with st.empty():
-                        button = st.button('Try out our Sentiment AI', on_click=partial(click_button))
-                if st.session_state.clicked:
-                    with st.spinner('Wait for it...'):
-                        emotion_emoji = {
-                            "Joy": "😊",
-                            "Anger": "🤬",
-                            "Sadness": "😭",
-                            "Fear": "😨",
-                            "Surprise": "😯"
-                        }
-                        sentfunc(data)
+        st.markdown(
+            '<p class="ttdash-font" style="text-align:center;">Engagement Rating</p>',
+            unsafe_allow_html=True)
 
-        with dash7:
-            st.markdown(""" 
-                        <style> 
-                            @import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" );
+        with st.container(border=True, height=200):
+            engrating(data)
 
-                            .ttdash-font {
-                                font-size: 25px;
-                                font-family:  "Poppins", sans-serif;
-                                color: white;
-                                font-weight: 600;
-                                padding-top: 0rem;
-                                margin-top: 0rem;
-                            } 
-                        </style> 
-                    """, unsafe_allow_html=True)
 
-            st.markdown(
-                '<p class="ttdash-font" style="text-align:center;">Urgent Matters</p>',
-                unsafe_allow_html=True)
-            with st.container(border=True, height=200):
-                if st.session_state.clicked:
-                    anger = "🤬"
-                    angeravg = int((len(data[data["Emotion"] == "Anger"]) / len(data)) * 100)
-                    anger_font_style = f'<span class="bold-font">{anger}</span>'
-                    angeravg_font_style = f'<span class="bold-font">{angeravg}%</span>'
-                    sad = "😭"
-                    sadavg = int((len(data[data["Emotion"] == "Sadness"]) / len(data)) * 100)
-                    sad_font_style = f'<span class="bold-font">{sad}</span>'
-                    sadavg_font_style = f'<span class="bold-font">{sadavg}%</span>'
 
-                    st.markdown(""" 
-                        <style> 
-                            @import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+    with dash5:
+        st.markdown(""" 
+                    <style> 
+                        @import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" );
 
-                            .angerem-font {
-                                font-size: 20px;
-                                font-family: "Poppins", sans-serif;
-                                color: white;
-                                font-weight: 300;
-                                padding-top: 0rem;
-                                margin-top: 0rem;
-                                padding-left: 0rem;
-                                margin-left: 0rem;
-                            } 
+                        .ttdash-font {
+                            font-size: 25px;
+                            font-family:  "Poppins", sans-serif;
+                            color: white;
+                            font-weight: 600;
+                            padding-top: 0rem;
+                            margin-top: 0rem;
+                        } 
+                    </style> 
+                """, unsafe_allow_html=True)
 
-                            .bold-font {
-                                font-size: 35px;
-                                font-family: "Poppins", sans-serif;
-                                color: white;
-                                font-weight: 500;
-                            }
-                        </style> 
-                    """, unsafe_allow_html=True)
-
-                    # Combining styles in a single sentence
-                    st.markdown(
-                        f'<p class="angerem-font" style="text-align:center;">{anger_font_style} in {angeravg_font_style} reviews</p>',
-                        unsafe_allow_html=True
-                    )
-
-                    st.markdown(
-                        f'<p class="angerem-font" style="text-align:center;">{sad_font_style} in {sadavg_font_style} reviews</p>',
-                        unsafe_allow_html=True
-                    )
-
-        with bot1:
-            st.text("")
-            st.text("")
-            st.markdown(""" 
-                        <style> 
-                            @import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" );
-
-                            .ttdash-font {
-                                font-size: 25px;
-                                font-family:  "Poppins", sans-serif;
-                                color: white;
-                                font-weight: 600;
-                                padding-top: 0rem;
-                                margin-top: 0rem;
-                            } 
-                        </style> 
-                    """, unsafe_allow_html=True)
-
-            st.markdown(
-                '<p class="ttdash-font" style="text-align:center;">Ask our AI Assistant</p>',
-                unsafe_allow_html=True)
-            with st.container(border = True, height = 500):
-                st.markdown(
-                    """
-                    <style>
-                    .custom-textarea textarea {
-                        font-size: 16px !important;  /* Text size */
-                        height: 150px !important;   /* Height of the textarea */
-                        width: 100% !important;     /* Width of the textarea */
-                        border: 2px solid #4CAF50;  /* Green border */
-                        border-radius: 8px;         /* Rounded corners */
-                        padding: 10px;              /* Inner padding */
+        st.markdown(
+            '<p class="ttdash-font" style="text-align:center;">Sentiment Overtime</p>',
+            unsafe_allow_html=True)
+        with st.container(border=True, height=200):
+            if not st.session_state.clicked:
+                with st.empty():
+                    button = st.button('Try out our Sentiment AI', on_click=partial(click_button))
+            if st.session_state.clicked:
+                with st.spinner('Wait for it...'):
+                    emotion_emoji = {
+                        "Joy": "😊",
+                        "Anger": "🤬",
+                        "Sadness": "😭",
+                        "Fear": "😨",
+                        "Surprise": "😯"
                     }
-                    </style>
-                    """,
-                    unsafe_allow_html=True,
+                    sentfunc(data)
+
+    with dash7:
+        st.markdown(""" 
+                    <style> 
+                        @import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" );
+
+                        .ttdash-font {
+                            font-size: 25px;
+                            font-family:  "Poppins", sans-serif;
+                            color: white;
+                            font-weight: 600;
+                            padding-top: 0rem;
+                            margin-top: 0rem;
+                        } 
+                    </style> 
+                """, unsafe_allow_html=True)
+
+        st.markdown(
+            '<p class="ttdash-font" style="text-align:center;">Urgent Matters</p>',
+            unsafe_allow_html=True)
+        with st.container(border=True, height=200):
+            if st.session_state.clicked:
+                anger = "🤬"
+                angeravg = int((len(data[data["Emotion"] == "Anger"]) / len(data)) * 100)
+                anger_font_style = f'<span class="bold-font">{anger}</span>'
+                angeravg_font_style = f'<span class="bold-font">{angeravg}%</span>'
+                sad = "😭"
+                sadavg = int((len(data[data["Emotion"] == "Sadness"]) / len(data)) * 100)
+                sad_font_style = f'<span class="bold-font">{sad}</span>'
+                sadavg_font_style = f'<span class="bold-font">{sadavg}%</span>'
+
+                st.markdown(""" 
+                    <style> 
+                        @import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+                        .angerem-font {
+                            font-size: 20px;
+                            font-family: "Poppins", sans-serif;
+                            color: white;
+                            font-weight: 300;
+                            padding-top: 0rem;
+                            margin-top: 0rem;
+                            padding-left: 0rem;
+                            margin-left: 0rem;
+                        } 
+
+                        .bold-font {
+                            font-size: 35px;
+                            font-family: "Poppins", sans-serif;
+                            color: white;
+                            font-weight: 500;
+                        }
+                    </style> 
+                """, unsafe_allow_html=True)
+
+                # Combining styles in a single sentence
+                st.markdown(
+                    f'<p class="angerem-font" style="text-align:center;">{anger_font_style} in {angeravg_font_style} reviews</p>',
+                    unsafe_allow_html=True
                 )
 
-                # Add the text area with a custom class
-                input_text = st.text_area("Enter your query", key="custom", placeholder="Type your query here...",
-                                          label_visibility="collapsed")
+                st.markdown(
+                    f'<p class="angerem-font" style="text-align:center;">{sad_font_style} in {sadavg_font_style} reviews</p>',
+                    unsafe_allow_html=True
+                )
 
-                if "chat_history" not in st.session_state:
-                    st.session_state.chat_history = []
+    with bot1:
+        st.text("")
+        st.text("")
+        st.markdown(""" 
+                    <style> 
+                        @import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" );
 
-            # Perform analysis
-                if input_text:
-                    # Add the query to the chat history
-                    st.session_state.chat_history.append({"query": input_text})
+                        .ttdash-font {
+                            font-size: 25px;
+                            font-family:  "Poppins", sans-serif;
+                            color: white;
+                            font-weight: 600;
+                            padding-top: 0rem;
+                            margin-top: 0rem;
+                        } 
+                    </style> 
+                """, unsafe_allow_html=True)
 
-                    # Simulate response from the `chat_with_csv` function
-                    result = chat_with_csv(data, input_text)
+        st.markdown(
+            '<p class="ttdash-font" style="text-align:center;">Ask our AI Assistant</p>',
+            unsafe_allow_html=True)
+        with st.container(border = True, height = 500):
+            st.markdown(
+                """
+                <style>
+                .custom-textarea textarea {
+                    font-size: 16px !important;  /* Text size */
+                    height: 150px !important;   /* Height of the textarea */
+                    width: 100% !important;     /* Width of the textarea */
+                    border: 2px solid #4CAF50;  /* Green border */
+                    border-radius: 8px;         /* Rounded corners */
+                    padding: 10px;              /* Inner padding */
+                }
+                </style>
+                """,
+                unsafe_allow_html=True,
+            )
 
-                    # Add the result to the chat history
-                    st.session_state.chat_history[-1]["response"] = result
+            # Add the text area with a custom class
+            input_text = st.text_area("Enter your query", key="custom", placeholder="Type your query here...",
+                                      label_visibility="collapsed")
 
-                    # Display the result of the current query with custom styles
+            if "chat_history" not in st.session_state:
+                st.session_state.chat_history = []
+
+        # Perform analysis
+            if input_text:
+                # Add the query to the chat history
+                st.session_state.chat_history.append({"query": input_text})
+
+                # Simulate response from the `chat_with_csv` function
+                result = chat_with_csv(data, input_text)
+
+                # Add the result to the chat history
+                st.session_state.chat_history[-1]["response"] = result
+
+                # Display the result of the current query with custom styles
+                st.markdown(
+                    f"""
+                    <div style='background-color: #63747A; 
+                                color: white; 
+                                border-radius: 10px; 
+                                padding: 10px; 
+                                margin-bottom: 10px;'>
+                        <strong>Bot:</strong> {result}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+                st.text("")
+                st.text("")
+                st.text("")
+            # Display the chat history
+            if st.session_state.chat_history:
+                for entry in st.session_state.chat_history:
                     st.markdown(
                         f"""
-                        <div style='background-color: #63747A; 
-                                    color: white; 
-                                    border-radius: 10px; 
-                                    padding: 10px; 
-                                    margin-bottom: 10px;'>
-                            <strong>Bot:</strong> {result}
+                        <div style='background-color: #E0E0E0; border-radius: 10px; padding: 10px; margin-bottom: 10px; color: #1E232D;'>
+                            <strong>You:</strong> {entry['query']}
                         </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
-                    st.text("")
-                    st.text("")
-                    st.text("")
-                # Display the chat history
-                if st.session_state.chat_history:
-                    for entry in st.session_state.chat_history:
-                        st.markdown(
-                            f"""
-                            <div style='background-color: #E0E0E0; border-radius: 10px; padding: 10px; margin-bottom: 10px; color: #1E232D;'>
-                                <strong>You:</strong> {entry['query']}
-                            </div>
-                            """, unsafe_allow_html=True)
+                        """, unsafe_allow_html=True)
 
-                        # Bot response with green background
-                        st.markdown(
-                            f"""
-                            <div style='background-color: #A0A0A0; border-radius: 10px; padding: 10px; margin-bottom: 10px; color: #1E232D;'>
-                                <strong>Bot:</strong> {entry['response']}
-                            </div>
-                            """, unsafe_allow_html=True)
+                    # Bot response with green background
+                    st.markdown(
+                        f"""
+                        <div style='background-color: #A0A0A0; border-radius: 10px; padding: 10px; margin-bottom: 10px; color: #1E232D;'>
+                            <strong>Bot:</strong> {entry['response']}
+                        </div>
+                        """, unsafe_allow_html=True)
 
-        with dat0:
-            st.text("")
-            st.text("")
-            st.markdown(""" 
-                        <style> 
-                            @import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" );
+    with dat0:
+        st.text("")
+        st.text("")
+        st.markdown(""" 
+                    <style> 
+                        @import url("https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" );
 
-                            .ttdash-font {
-                                font-size: 25px;
-                                font-family:  "Poppins", sans-serif;
-                                color: white;
-                                font-weight: 600;
-                                padding-top: 0rem;
-                                margin-top: 0rem;
-                            } 
-                        </style> 
-                    """, unsafe_allow_html=True)
+                        .ttdash-font {
+                            font-size: 25px;
+                            font-family:  "Poppins", sans-serif;
+                            color: white;
+                            font-weight: 600;
+                            padding-top: 0rem;
+                            margin-top: 0rem;
+                        } 
+                    </style> 
+                """, unsafe_allow_html=True)
 
-            st.markdown(
-                '<p class="ttdash-font" style="text-align:center;">Navigate the Data</p>',
-                unsafe_allow_html=True)
-            with st.container(border = True, height = 500):
-                dtf(data)
+        st.markdown(
+            '<p class="ttdash-font" style="text-align:center;">Navigate the Data</p>',
+            unsafe_allow_html=True)
+        with st.container(border = True, height = 500):
+            dtf(data)
 
 
 
-        if __name__ == '__main__':
-            app(data)
+    if __name__ == '__main__':
+        app(data)
 
 
 
