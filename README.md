@@ -25,4 +25,4 @@ While this prototype is tailored to the above data structure, the model can be a
 ### How to run locally
 
 Pull this repository into any Python 3.10 IDE. In the directory where the script **HOME.py** is featured, run `streamlit run HOME.py` in the terminal. A web page will open on your default browser with the application running.
-
+Make sure to have the files `config.toml` (contains theme specifications) and `.env` (contains the API key) in the correct directory. 
