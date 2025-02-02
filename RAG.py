@@ -15,7 +15,6 @@ import time
 fake = faker.Faker()
 random.seed(42)
 
-# Generate random data for 50 rows
 items = ['Laptop', 'Phone', 'Tablet', 'Monitor', 'Keyboard', 'Mouse']
 countries = [
     'Germany', 'France', 'Italy', 'Spain', 'UK', 'Netherlands',
@@ -186,79 +185,4 @@ print(pd.DataFrame(df["Emotion"].value_counts()).reset_index()["Emotion"][0] / l
 
 
 df.to_csv('RAG.csv', index=False)
-df_path = "/Users/luigicolonna/Desktop/PycharmProjects/GenAI/RAG.csv"
-
-#groq_api = 'your-groq-api-key'
-llm = ChatGroq(temperature=0.2, model="mixtral-8x7b-32768", api_key="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")
-
-
-# Create the CSV agent
-agent = create_csv_agent(llm, df_path, verbose=True, allow_dangerous_code=True, handle_parsing_errors=True, agent_executor_kwargs={"output_parser": None})
-
-conversation_history = []
-
-def query_data(query):
-    try:
-        # Here, interact with your LangChain agent
-        response = agent.invoke(query)
-        if isinstance(response, dict) and 'output' in response:
-            response = response['output']
-        return response
-    except Exception as e:
-        return f"Sorry, I couldn't process your request. Error: {e}"
-
-def chatbot():
-    st.title("ChatBot")
-
-    # Store conversation history in session state for persistence
-    if 'conversation' not in st.session_state:
-        st.session_state.conversation = []
-
-    # Display conversation so far
-    for message in st.session_state.conversation:
-        st.write(message)
-
-    # User input
-    query = st.text_input("You:", key="query")
-
-    if query:
-        # Add user message to conversation history
-        st.session_state.conversation.append(f"User: {query}")
-
-        # Get bot response
-        response = query_data(query)
-
-        # Add bot message to conversation history
-        st.session_state.conversation.append(f"Bot: {response}")
-
-        # Display response
-        st.write(f"Bot: {response}")
-
-# Run the Streamlit app
-if __name__ == "__main__":
-    chatbot()
-
-import whisper
-from transformers import pipeline
-
-classifier = pipeline("text-classification",model='bhadresh-savani/distilbert-base-uncased-emotion', return_all_scores=False)
-prediction = classifier("OMG BEST PURcASE EVER", )
-print(prediction[0]["label"])
-pipe = pipeline("text-classification", model="lxyuan/distilbert-base-multilingual-cased-sentiments-student")
-sent = pipe("luv this imma use it 4eva", )
-print(sent)
-mod = pipeline("text-classification", model="nlptown/bert-base-multilingual-uncased-sentiment")
-grade = mod("luv this imma use it 4eva", )
-print(grade)
-
-model = whisper.load_model("turbo")
-result = model.transcribe("audio.mp3")
-print(result["text"])
-
-df = pd.read_csv("/Users/luigicolonna/Desktop/PycharmProjects/GenAI/RAG.csv")
-df.Emotion.value_counts()
-
-int((len(df[df["Emotion"] == "Anger"]) / len(df))*100)
-
-len(df[df["Emotion"] == "Sadness"])
 
